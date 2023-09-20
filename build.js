@@ -5,6 +5,8 @@ const esbuild = require('esbuild');
 
 const modules = {
   common: 'common',
+  backend: 'backend',
+  react: 'react',
 };
 
 const doBuild = (moduleName, useEsModules) => {

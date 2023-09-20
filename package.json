@@ -14,7 +14,7 @@
       },
       "import": {
         "default": "./build/*/index.mjs",
-        "types": "./build/*/index.d.ts"
+        "types": "./build/*/index.d.mts"
       }
     }
   },
@@ -25,6 +25,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "electron": "^26.2.1",
     "esbuild": "^0.19.2",
     "prettier": "^3.0.3",
     "typescript": "^5.2.2"
@@ -32,6 +33,7 @@
   "scripts": {
     "clean": "find . \\( -name \"*.mjs\" -o -name \"*.cjs\" -o -name \"*.js\" -o -name \"*.d.ts\" -o -name \"*.mjs.map\" -o -name \"*.cjs.map\" -o -name \"*.js.map\" \\) -not -path \"./node_modules/*\" -not -path \"./build.js\" -type f -delete",
     "build": "rm -rf build && npm run build-types && node ./build.js",
+    "build-types-both": "tsc --project tsconfig.json --module es6 && sh ./renameDts.sh && tsc --project tsconfig.json",
     "build-types": "tsc --project tsconfig.json"
   }
 }

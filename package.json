@@ -1,0 +1,37 @@
+{
+  "name": "@superflag-io/super-ipc",
+  "version": "0.0.1",
+  "description": "",
+  "exports": {
+    "./*": {
+      "module": {
+        "default": "./build/*/index.js",
+        "types": "./build/*/index.d.ts"
+      },
+      "require": {
+        "default": "./build/*/index.cjs",
+        "types": "./build/*/index.d.ts"
+      },
+      "import": {
+        "default": "./build/*/index.mjs",
+        "types": "./build/*/index.d.ts"
+      }
+    }
+  },
+  "files": [
+    "build"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "esbuild": "^0.19.2",
+    "prettier": "^3.0.3",
+    "typescript": "^5.2.2"
+  },
+  "scripts": {
+    "clean": "find . \\( -name \"*.mjs\" -o -name \"*.cjs\" -o -name \"*.js\" -o -name \"*.d.ts\" -o -name \"*.mjs.map\" -o -name \"*.cjs.map\" -o -name \"*.js.map\" \\) -not -path \"./node_modules/*\" -not -path \"./build.js\" -type f -delete",
+    "build": "rm -rf build && npm run build-types && node ./build.js",
+    "build-types": "tsc --project tsconfig.json"
+  }
+}

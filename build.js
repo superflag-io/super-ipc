@@ -4,26 +4,32 @@ const esbuild = require('esbuild');
 // const { nodeExternalsPlugin } = require('esbuild-node-externals');
 
 const modules = {
-  common: 'common',
-  backend: 'backend',
-  react: 'react',
+  common: { folderName: 'common', isFrontend: false },
+  backend: { folderName: 'backend', isFrontend: false },
+  react: { folderName: 'react', isFrontend: true },
+  preloader: { folderName: 'preloader', isFrontend: true },
 };
 
 const doBuild = (moduleName, useEsModules) => {
   esbuild
     .build({
-      entryPoints: [`./${modules[moduleName]}/index.ts`],
+      entryPoints: [`./${modules[moduleName].folderName}/index.ts`],
       outfile: `build/${moduleName}/index.${
         useEsModules === undefined ? '' : useEsModules ? 'm' : 'c'
       }js`,
       bundle: true,
       minify: false,
-      platform: 'node',
       sourcemap: true,
-      target: 'node14',
-      ...(useEsModules === undefined
-        ? {}
-        : { format: useEsModules ? 'esm' : 'cjs' }),
+      format: useEsModules ? 'esm' : 'cjs',
+      ...(modules[moduleName].isFrontend
+        ? {
+            external: ['react', 'react-dom'],
+          }
+        : {
+            external: ['electron'],
+            platform: 'node',
+            target: 'node14',
+          }),
       // plugins: [nodeExternalsPlugin()],
       plugins: [],
     })

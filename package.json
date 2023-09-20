@@ -21,19 +21,40 @@
   "files": [
     "build"
   ],
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/superflag-io/super-ipc.git"
+  },
+  "keywords": [
+    "electron",
+    "ipc"
+  ],
+  "author": "Blake Stacks",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/superflag-io/super-ipc/issues"
+  },
   "devDependencies": {
+    "@types/react": ">16.8",
+    "@types/react-dom": ">16.8",
     "electron": "^26.2.1",
     "esbuild": "^0.19.2",
     "prettier": "^3.0.3",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "react": ">16.8",
+    "react-dom": ">16.8"
   },
   "scripts": {
     "clean": "find . \\( -name \"*.mjs\" -o -name \"*.cjs\" -o -name \"*.js\" -o -name \"*.d.ts\" -o -name \"*.mjs.map\" -o -name \"*.cjs.map\" -o -name \"*.js.map\" \\) -not -path \"./node_modules/*\" -not -path \"./build.js\" -type f -delete",
     "build": "rm -rf build && npm run build-types && node ./build.js",
     "build-types-both": "tsc --project tsconfig.json --module es6 && sh ./renameDts.sh && tsc --project tsconfig.json",
     "build-types": "tsc --project tsconfig.json"
+  },
+  "peerDependencies": {
+    "react": ">16.8",
+    "react-dom": ">16.8"
   }
 }

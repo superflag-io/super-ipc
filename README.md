@@ -9,6 +9,17 @@ architecture that doesn't require using a local web server;
 
 ```ts
 // api.ts
+export enum PROMISE_CHANNEL {
+  LoadConfiguration = 'LOAD_CONFIGURATION',
+  SaveConfiguration = 'SAVE_CONFIGURATION',
+  // ...
+}
+
+export enum ASYNC_CHANNEL {
+  RunBatchOperation = 'RUN_BATCH_OPERATION',
+  // ...
+}
+
 export interface BackendPromiseApi extends BackendSyncApiType<PROMISE_CHANNEL> {
   [PROMISE_CHANNEL.LoadConfiguration]: {
     props: void;
@@ -76,17 +87,6 @@ import {
   createUseBackendSyncHook,
 } from '@superflag-io/super-ipc/react';
 
-export enum PROMISE_CHANNEL {
-  LoadConfiguration = 'LOAD_CONFIGURATION',
-  SaveConfiguration = 'SAVE_CONFIGURATION',
-  // ...
-}
-
-export enum ASYNC_CHANNEL {
-  RunBatchOperation = 'RUN_BATCH_OPERATION',
-  // ...
-}
-
 export const useBackend = createUseBackendSyncHook<
   PROMISE_CHANNEL,
   BackendPromiseApi
@@ -98,7 +98,6 @@ export const useBackendAsync = createUseBackendAsyncHook<
 >();
 
 // hook usage
-
 const { data, error, loading } = useBackend({
   channel: PROMISE_CHANNEL.LoadConfiguration,
   props:{

@@ -1,7 +1,7 @@
 {
-  "name": "@superflag-io/super-ipc",
+  "name": "@superflag/super-ipc",
   "version": "0.0.1",
-  "description": "",
+  "description": "A sanely typed convenience wrapper around electron ipc",
   "exports": {
     "./*": {
       "module": {

@@ -73,7 +73,7 @@ setupApiHandlers(app, BackendHandlers, BackendAsyncHandlers, ipcMain);
 Preload file:
 ```ts
 // preload.ts
-import { registerElectronApiBridge } from '@superflag-io/super-ipc/preloader';
+import { registerElectronApiBridge } from '@superflag/super-ipc/preloader';
 import { contextBridge, ipcRenderer } from 'electron';
 
 registerElectronApiBridge(contextBridge, ipcRenderer);
@@ -85,7 +85,7 @@ React usage:
 import {
   createUseBackendAsyncHook,
   createUseBackendSyncHook,
-} from '@superflag-io/super-ipc/react';
+} from '@superflag/super-ipc/react';
 
 export const useBackend = createUseBackendSyncHook<
   PROMISE_CHANNEL,

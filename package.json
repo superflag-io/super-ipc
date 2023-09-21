@@ -1,6 +1,6 @@
 {
   "name": "@superflag/super-ipc",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "A sanely typed convenience wrapper around electron ipc",
   "exports": {
     "./*": {
@@ -14,12 +14,16 @@
       },
       "import": {
         "default": "./build/*/index.mjs",
-        "types": "./build/*/index.d.mts"
+        "types": "./build/*/index.d.ts"
       }
     }
   },
   "files": [
-    "build"
+    "build",
+    "*/**.ts",
+    "*/**.d.ts",
+    "*/**.d.mts",
+    "*/**.d.cts"
   ],
   "publishConfig": {
     "access": "public"
@@ -51,7 +55,8 @@
     "clean": "find . \\( -name \"*.mjs\" -o -name \"*.cjs\" -o -name \"*.js\" -o -name \"*.d.ts\" -o -name \"*.mjs.map\" -o -name \"*.cjs.map\" -o -name \"*.js.map\" \\) -not -path \"./node_modules/*\" -not -path \"./build.js\" -type f -delete",
     "build": "rm -rf build && npm run build-types && node ./build.js",
     "build-types-both": "tsc --project tsconfig.json --module es6 && sh ./renameDts.sh && tsc --project tsconfig.json",
-    "build-types": "tsc --project tsconfig.json"
+    "build-types": "tsc --project tsconfig.json",
+    "pub": "npm run build && npm publish"
   },
   "peerDependencies": {
     "react": ">16.8",

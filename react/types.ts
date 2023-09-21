@@ -4,6 +4,11 @@ import {
   BackendSyncApiType,
 } from '../common';
 
+interface CommonHookProps {
+  skip?: boolean;
+  keepDataDuringRefetch?: boolean;
+}
+
 export interface BackendApiHookResult<
   CHANNEL extends string,
   API extends BackendSyncApiType<CHANNEL>,
@@ -19,10 +24,9 @@ export interface BackendApiHookResult<
 export interface BackendApiHookProps<
   CHANNEL extends string,
   API extends BackendSyncApiType<CHANNEL>,
-> {
+> extends CommonHookProps {
   channel: CHANNEL;
   props?: API[CHANNEL]['props'];
-  skip?: boolean;
 }
 
 export interface BackendApiAsyncHookResult<
@@ -43,10 +47,9 @@ export interface BackendApiAsyncHookResult<
 export interface BackendApiAsyncHookProps<
   CHANNEL extends string,
   API extends BackendAsyncApiType<CHANNEL>,
-> {
+> extends CommonHookProps {
   channel: CHANNEL;
   props?: API[CHANNEL]['props'];
-  skip?: boolean;
   // handlers
   onInit?: (event: API[CHANNEL]['initResult']) => void;
   onProgress?: (event: API[CHANNEL]['progressResult']) => void;

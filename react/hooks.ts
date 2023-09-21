@@ -48,6 +48,7 @@ export const useBackendRaw = <
   channel,
   props,
   skip,
+  keepDataDuringRefetch,
 }: BackendApiHookProps<CHANNEL, API>): BackendApiHookResult<CHANNEL, API> => {
   const [loading, setLoading] = useState(!skip);
   const [data, setData] = useState<API[CHANNEL]['result']>();
@@ -57,6 +58,10 @@ export const useBackendRaw = <
     (propOverrides?: API[CHANNEL]['props']) => {
       if (!loading) {
         setLoading(true);
+      }
+      setError(undefined);
+      if (!keepDataDuringRefetch && data) {
+        setData(undefined);
       }
       return electronApi
         .invoke(channel, propOverrides ?? props)
@@ -96,6 +101,21 @@ export const useBackendRaw = <
   };
 };
 
+export const useBackendMutationRaw = <
+  ALL_CHANNELS extends string,
+  API extends BackendSyncApiType<ALL_CHANNELS>,
+  CHANNEL extends ALL_CHANNELS,
+>(
+  props: Omit<BackendApiHookProps<CHANNEL, API>, 'skip'>,
+): [
+  BackendApiHookResult<CHANNEL, API>['refetch'],
+  BackendApiHookResult<CHANNEL, API>,
+] => {
+  const result = useBackendRaw({ ...props, skip: true });
+
+  return [result.refetch, result];
+};
+
 export const useBackendAsyncRaw = <
   ALL_CHANNELS extends string,
   API extends BackendAsyncApiType<CHANNEL>,
@@ -104,6 +124,7 @@ export const useBackendAsyncRaw = <
   channel,
   props,
   skip,
+  keepDataDuringRefetch,
   onInit,
   onProgress,
   onComplete,
@@ -195,9 +216,11 @@ export const useBackendAsyncRaw = <
       callId.current = Math.round(Math.random() * 100000);
 
       // clear states
-      setInitialData(undefined);
-      setProgressData([]);
-      setCompleteData(undefined);
+      if (!keepDataDuringRefetch) {
+        setInitialData(undefined);
+        setProgressData([]);
+        setCompleteData(undefined);
+      }
       setError(undefined);
       setLoading(true);
 
@@ -239,6 +262,18 @@ export const createUseBackendSyncHook = <
     props: BackendApiHookProps<CHANNEL, API>,
   ): BackendApiHookResult<CHANNEL, API> =>
     useBackendRaw<ALL_CHANNELS, API, CHANNEL>(props);
+};
+
+export const createUseBackendMutationSyncHook = <
+  ALL_CHANNELS extends string,
+  API extends BackendSyncApiType<ALL_CHANNELS>,
+>() => {
+  return <CHANNEL extends ALL_CHANNELS>(
+    props: Omit<BackendApiHookProps<CHANNEL, API>, 'skip'>,
+  ): [
+    BackendApiHookResult<CHANNEL, API>['refetch'],
+    BackendApiHookResult<CHANNEL, API>,
+  ] => useBackendMutationRaw<ALL_CHANNELS, API, CHANNEL>(props);
 };
 
 export const createUseBackendAsyncHook = <

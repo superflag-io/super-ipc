@@ -1,29 +1,14 @@
 {
   "name": "@superflag/super-ipc",
-  "version": "0.0.5",
+  "version": "0.0.9",
   "description": "A sanely typed convenience wrapper around electron ipc",
-  "exports": {
-    "./*": {
-      "module": {
-        "default": "./build/*/index.js",
-        "types": "./build/*/index.d.ts"
-      },
-      "require": {
-        "default": "./build/*/index.cjs",
-        "types": "./build/*/index.d.ts"
-      },
-      "import": {
-        "default": "./build/*/index.mjs",
-        "types": "./build/*/index.d.ts"
-      }
-    }
-  },
   "files": [
-    "build",
+    "*/**.js",
     "*/**.ts",
     "*/**.d.ts",
     "*/**.d.mts",
-    "*/**.d.cts"
+    "*/**.d.cts",
+    "tsconfig.json"
   ],
   "publishConfig": {
     "access": "public"
@@ -44,21 +29,22 @@
   "devDependencies": {
     "@types/react": ">16.8",
     "@types/react-dom": ">16.8",
-    "electron": "^26.2.1",
+    "electron": "^31.3.0",
     "esbuild": "^0.19.2",
     "prettier": "^3.0.3",
-    "typescript": "^5.2.2",
     "react": ">16.8",
-    "react-dom": ">16.8"
+    "react-dom": ">16.8",
+    "typescript": "^5.2.2"
   },
   "scripts": {
     "clean": "find . \\( -name \"*.mjs\" -o -name \"*.cjs\" -o -name \"*.js\" -o -name \"*.d.ts\" -o -name \"*.mjs.map\" -o -name \"*.cjs.map\" -o -name \"*.js.map\" \\) -not -path \"./node_modules/*\" -not -path \"./build.js\" -type f -delete",
-    "build": "rm -rf build && npm run build-types && node ./build.js",
-    "build-types-both": "tsc --project tsconfig.json --module es6 && sh ./renameDts.sh && tsc --project tsconfig.json",
-    "build-types": "tsc --project tsconfig.json",
-    "pub": "npm run build && npm publish"
+    "build-types-both": "npm run build-types:es6 && sh ./renameDts.sh && npm run build-types:cjs",
+    "build-types:cjs": "tsc --project tsconfig.json",
+    "build-types:es6": "tsc --module es6 --project tsconfig.json",
+    "pub": "npm run build-types:cjs && npm publish && npm run clean"
   },
   "peerDependencies": {
+    "electron": ">24",
     "react": ">16.8",
     "react-dom": ">16.8"
   }

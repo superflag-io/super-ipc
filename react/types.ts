@@ -1,8 +1,8 @@
-import {
+import type {
   BackendAsyncApiType,
   BackendResult,
   BackendSyncApiType,
-} from '../common';
+} from '@superflag/super-ipc-core';
 
 interface CommonHookProps {
   skip?: boolean;

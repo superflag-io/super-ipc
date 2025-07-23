@@ -1,0 +1,50 @@
+{
+  "name": "@superflag/super-ipc-react",
+  "version": "0.0.10",
+  "description": "A sanely typed convenience wrapper around electron ipc",
+  "type": "module",
+  "exports": {
+    "import": "./build/index.js"
+  },
+  "files": [
+    "build/**",
+    "package.json"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/superflag-io/super-ipc.git"
+  },
+  "keywords": [
+    "electron",
+    "ipc"
+  ],
+  "author": "Blake Stacks",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/superflag-io/super-ipc/issues"
+  },
+  "devDependencies": {
+    "@types/react": ">16.8",
+    "@types/react-dom": ">16.8",
+    "typescript": "^5.2.2",
+    "@total-typescript/tsconfig": "^1.0.4"
+  },
+  "scripts": {
+    "build:es6": "rm -rf build && tsc",
+    "build:cjs": "tsc --module commonjs"
+  },
+  "dependencies": {
+    "react": ">16.8",
+    "react-dom": ">16.8",
+    "electron": "^31.3.0",
+    "@superflag/super-ipc-core": "workspace:*"
+  },
+  "peerDependencies": {
+    "electron": ">24",
+    "react": ">16.8",
+    "react-dom": ">16.8"
+  }
+}

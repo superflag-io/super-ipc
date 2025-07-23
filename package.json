@@ -2,21 +2,6 @@
   "name": "@superflag/super-ipc",
   "version": "0.0.9",
   "description": "A sanely typed convenience wrapper around electron ipc",
-  "files": [
-    "*/**.js",
-    "*/**.ts",
-    "*/**.d.ts",
-    "*/**.d.mts",
-    "*/**.d.cts",
-    "tsconfig.json"
-  ],
-  "publishConfig": {
-    "access": "public"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/superflag-io/super-ipc.git"
-  },
   "keywords": [
     "electron",
     "ipc"
@@ -27,25 +12,18 @@
     "url": "https://github.com/superflag-io/super-ipc/issues"
   },
   "devDependencies": {
-    "@types/react": ">16.8",
-    "@types/react-dom": ">16.8",
-    "electron": "^31.3.0",
-    "esbuild": "^0.19.2",
+    "@changesets/cli": "^2.29.5",
+    "@eslint/js": "^9.31.0",
+    "eslint": "^9.31.0",
     "prettier": "^3.0.3",
-    "react": ">16.8",
-    "react-dom": ">16.8",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "typescript-eslint": "^8.38.0"
   },
   "scripts": {
     "clean": "find . \\( -name \"*.mjs\" -o -name \"*.cjs\" -o -name \"*.js\" -o -name \"*.d.ts\" -o -name \"*.mjs.map\" -o -name \"*.cjs.map\" -o -name \"*.js.map\" \\) -not -path \"./node_modules/*\" -not -path \"./build.js\" -type f -delete",
-    "build-types-both": "npm run build-types:es6 && sh ./renameDts.sh && npm run build-types:cjs",
-    "build-types:cjs": "tsc --project tsconfig.json",
-    "build-types:es6": "tsc --module es6 --project tsconfig.json",
-    "pub": "npm run build-types:cjs && npm publish && npm run clean"
-  },
-  "peerDependencies": {
-    "electron": ">24",
-    "react": ">16.8",
-    "react-dom": ">16.8"
+    "build-types:both": "npm run build-types:es6 && npm run build-types:cjs",
+    "build-types:cjs": "pnpm run --filter @superflag/super-ipc-core build:cjs && pnpm run -r build:cjs",
+    "build-types:es6": "pnpm run --filter @superflag/super-ipc-core build:es6 && pnpm run -r build:es6",
+    "pub": "npm run build-types:es6 && npm publish && npm run clean"
   }
 }

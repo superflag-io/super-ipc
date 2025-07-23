@@ -1,6 +1,6 @@
 import type { App, IpcMain } from 'electron';
 import { wrapHandler, wrapHandlerAsync } from './wrapHandler';
-import { BackendHandler, BackendHandlerAsync } from './types';
+import type { BackendHandler, BackendHandlerAsync } from './types';
 
 export function setupApiHandlers(
   app: App,

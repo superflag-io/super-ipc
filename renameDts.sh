@@ -1,4 +1,3 @@
-cd build
 #for file in *.d.ts; do
 #    mv -- "$file" "${file%.d.ts}.d.mts"
 #done

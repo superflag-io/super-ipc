@@ -1,6 +1,6 @@
 # super-ipc
 
-A sensibly typed set of wrappers around electron's confusing ipc 
+A sensibly typed set of wrappers around electron's confusing ipc
 architecture that doesn't require using a local web server;
 
 ## Usage
@@ -70,7 +70,9 @@ setupApiHandlers(app, BackendHandlers, BackendAsyncHandlers, ipcMain);
 ```
 
 ### Frontend
+
 Preload file:
+
 ```ts
 // preload.ts
 import { registerElectronApiBridge } from '@superflag/super-ipc/preloader';
@@ -80,6 +82,7 @@ registerElectronApiBridge(contextBridge, ipcRenderer);
 ```
 
 React usage:
+
 ```tsx
 // hooks.ts
 import {
@@ -100,7 +103,7 @@ export const useBackendAsync = createUseBackendAsyncHook<
 // hook usage
 const { data, error, loading } = useBackend({
   channel: PROMISE_CHANNEL.LoadConfiguration,
-  props:{
+  props: {
     // ...
   }
 });

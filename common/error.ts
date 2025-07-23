@@ -16,21 +16,6 @@ export class AppError extends Error {
     this.stack = extra?.stack;
   }
 
-  toJSON() {
-    return {
-      message: this.message,
-      context: this.context,
-      stack: this.stack,
-      inner:
-        this.inner && this.inner._typename !== APP_ERROR_TYPENAME
-          ? {
-              message: this.inner.message,
-              stack: this.inner.stack,
-            }
-          : this.inner,
-    };
-  }
-
   static fromJSON(json: string): AppError {
     try {
       const parsed = JSON.parse(json);
@@ -44,5 +29,20 @@ export class AppError extends Error {
         inner: err,
       });
     }
+  }
+
+  toJSON() {
+    return {
+      message: this.message,
+      context: this.context,
+      stack: this.stack,
+      inner:
+        this.inner && this.inner._typename !== APP_ERROR_TYPENAME
+          ? {
+              message: this.inner.message,
+              stack: this.inner.stack,
+            }
+          : this.inner,
+    };
   }
 }

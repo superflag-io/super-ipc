@@ -1,0 +1,14 @@
+{
+  "extends": [
+    "@total-typescript/tsconfig/tsc/dom/library-monorepo",
+    "../tsconfig.json"
+  ],
+  "compilerOptions": {
+    "lib": [
+      "ESNext",
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ]
+  }
+}

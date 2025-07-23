@@ -1,12 +1,14 @@
+import type {
+  BackendAsyncApiType,
+  BackendResult,
+  BackendSyncApiType,
+} from '@superflag/super-ipc-core';
 import {
   AppError,
   ASYNC_REPLY_SUFFIX,
-  BackendAsyncApiType,
-  BackendResult,
   BackendResultMode,
-  BackendSyncApiType,
-} from '../common';
-import {
+} from '@superflag/super-ipc-core';
+import type {
   BackendApiAsyncHookProps,
   BackendApiAsyncHookResult,
   BackendApiHookProps,

@@ -1,5 +1,8 @@
 import type { App, IpcMainInvokeEvent } from 'electron';
-import { BackendAsyncApiType, BackendSyncApiType } from '../common';
+import type {
+  BackendAsyncApiType,
+  BackendSyncApiType,
+} from '@superflag/super-ipc-core';
 
 export type BackendHandler<P = any, R = any> = (args: {
   app: App;

@@ -15,8 +15,8 @@ export interface BackendResult<T = string> {
 
 export type DeepPartial<T> = T extends object
   ? {
-    [P in keyof T]?: DeepPartial<T[P]>;
-  }
+      [P in keyof T]?: DeepPartial<T[P]>;
+    }
   : T;
 
 export const ASYNC_REPLY_SUFFIX = '-ASYNC_REPLY';

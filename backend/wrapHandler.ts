@@ -1,10 +1,10 @@
+import type { BackendResult } from '@superflag/super-ipc-core';
 import {
   AppError,
   ASYNC_REPLY_SUFFIX,
-  BackendResult,
   BackendResultMode,
-} from '../common';
-import { BackendHandler, BackendHandlerAsync } from './types';
+} from '@superflag/super-ipc-core';
+import type { BackendHandler, BackendHandlerAsync } from './types';
 import type { App, IpcMainInvokeEvent } from 'electron';
 
 function backendResultFromError(

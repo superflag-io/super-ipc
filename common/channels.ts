@@ -1,12 +1,22 @@
-export type BackendSyncApiType<C extends string, T = unknown, U = unknown> = Record<
+export type BackendSyncApiType<
+  C extends string,
+  T = unknown,
+  U = unknown,
+> = Record<
   C,
   {
     props: T;
     result: U;
   }
->
+>;
 
-export type BackendAsyncApiType<C extends string, T = unknown, U = unknown, V = unknown, W = unknown> = Record<
+export type BackendAsyncApiType<
+  C extends string,
+  T = unknown,
+  U = unknown,
+  V = unknown,
+  W = unknown,
+> = Record<
   C,
   {
     props: T;
@@ -14,4 +24,4 @@ export type BackendAsyncApiType<C extends string, T = unknown, U = unknown, V = 
     progressResult: V;
     completeResult: W;
   }
->
+>;

@@ -20,10 +20,10 @@
     "typescript-eslint": "^8.38.0"
   },
   "scripts": {
-    "clean": "find . \\( -name \"*.mjs\" -o -name \"*.cjs\" -o -name \"*.js\" -o -name \"*.d.ts\" -o -name \"*.mjs.map\" -o -name \"*.cjs.map\" -o -name \"*.js.map\" \\) -not -path \"./node_modules/*\" -not -path \"./build.js\" -type f -delete",
+    "clean": "pnpm run -r clean",
     "build-types:both": "npm run build-types:es6 && npm run build-types:cjs",
     "build-types:cjs": "pnpm run --filter @superflag/super-ipc-core build:cjs && pnpm run -r build:cjs",
     "build-types:es6": "pnpm run --filter @superflag/super-ipc-core build:es6 && pnpm run -r build:es6",
-    "pub": "npm run build-types:es6 && npm publish && npm run clean"
+    "pub": "pnpm run build-types:es6 && pnpm publish -r && pnpm run clean"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@superflag/super-ipc-backend",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "A sanely typed convenience wrapper around electron ipc",
   "type": "module",
   "exports": {
@@ -35,7 +35,8 @@
     "@superflag/super-ipc-core": "workspace:*"
   },
   "scripts": {
-    "build:es6": "rm -rf build && tsc",
+    "clean": "rm -rf build",
+    "build:es6": "tsc",
     "build:cjs": "tsc --module commonjs"
   },
   "peerDependencies": {

@@ -1,5 +1,5 @@
 {
-  "name": "@superflag/super-ipc-core",
+  "name": "@superflag/super-ipc-preloader",
   "version": "0.0.10",
   "description": "A sanely typed convenience wrapper around electron ipc",
   "type": "module",
@@ -29,6 +29,9 @@
   "devDependencies": {
     "typescript": "^5.2.2",
     "@total-typescript/tsconfig": "^1.0.4"
+  },
+  "dependencies": {
+    "electron": "^31.3.0"
   },
   "scripts": {
     "build:es6": "rm -rf build && tsc",

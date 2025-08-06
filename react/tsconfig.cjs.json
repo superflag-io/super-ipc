@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "ESNext",
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ]
+  },
+  "extends": [
+    "../tsconfig.cjs.json"
+  ]
+}

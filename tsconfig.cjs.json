@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+//    "moduleResolution": "bundler",
+    "outDir": "${configDir}/build/cjs",
+//    "declaration": false,
+    "sourceMap": true,
+    "inlineSourceMap": false
+    //    "lib": ["ESNext","ES2022"]
+//    "moduleDetection": "force"
+  }
+}

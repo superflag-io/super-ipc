@@ -21,9 +21,9 @@
   },
   "scripts": {
     "clean": "pnpm run -r clean",
-    "build-types:both": "npm run build-types:es6 && npm run build-types:cjs",
+    "build-types:all": "pnpm run build-types:es6 && pnpm run build-types:cjs",
     "build-types:cjs": "pnpm run --filter @superflag/super-ipc-core build:cjs && pnpm run -r build:cjs",
     "build-types:es6": "pnpm run --filter @superflag/super-ipc-core build:es6 && pnpm run -r build:es6",
-    "pub": "pnpm run build-types:es6 && pnpm publish -r && pnpm run clean"
+    "pub": "pnpm run clean && pnpm run build-types:all && pnpm publish -r && pnpm run clean"
   }
 }

@@ -1,11 +1,12 @@
 {
   "name": "@superflag/super-ipc-backend",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "A sanely typed convenience wrapper around electron ipc",
   "type": "module",
   "exports": {
-    "import": "./build/index.js",
-    "types": "./build/index.d.ts"
+    "import": "./build/mjs/index.js",
+    "require": "./build/cjs/index.js",
+    "types": "./build/mjs/index.d.ts"
   },
   "files": [
     "build/**",
@@ -38,7 +39,7 @@
   "scripts": {
     "clean": "rm -rf build",
     "build:es6": "tsc",
-    "build:cjs": "tsc --module commonjs"
+    "build:cjs": "tsc -p tsconfig.cjs.json"
   },
   "peerDependencies": {
     "electron": ">24"

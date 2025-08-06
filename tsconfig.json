@@ -2,7 +2,10 @@
   "compilerOptions": {
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "outDir": "${configDir}/build",
+    "outDir": "${configDir}/build/mjs",
+//    "declaration": false,
+//    "declarationMap": false,
+//    "composite": false,
 //    "lib": ["ESNext","ES2022"]
 //    "moduleDetection": "force"
   }

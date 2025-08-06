@@ -1,5 +1,11 @@
 # @superflag/super-ipc-preloader
 
+## 0.0.13
+
+### Patch Changes
+
+- fix exports for cjs and mjs
+
 ## 0.0.12
 
 ### Patch Changes

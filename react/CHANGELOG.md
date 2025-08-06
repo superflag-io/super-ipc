@@ -1,5 +1,13 @@
 # @superflag/super-ipc-react
 
+## 0.0.13
+
+### Patch Changes
+
+- fix exports for cjs and mjs
+- Updated dependencies
+  - @superflag/super-ipc-core@0.0.13
+
 ## 0.0.12
 
 ### Patch Changes

@@ -1,12 +1,10 @@
-import type {
-  BackendAsyncApiType,
-  BackendResult,
-  BackendSyncApiType,
-} from '@superflag/super-ipc-core';
 import {
   AppError,
   ASYNC_REPLY_SUFFIX,
+  type BackendAsyncApiType,
+  type BackendResult,
   BackendResultMode,
+  type BackendSyncApiType,
 } from '@superflag/super-ipc-core';
 import type {
   BackendApiAsyncHookProps,
@@ -84,6 +82,13 @@ export const useBackendRaw = <
             error: response.error,
             resultMode: BackendResultMode.Complete,
           } as BackendResult<API[CHANNEL]['result']>;
+        })
+        .catch((err: any) => {
+          handleError(
+            { error: err, resultMode: BackendResultMode.Complete },
+            setError,
+          );
+          setLoading(false);
         });
     },
     [channel, loading, props],

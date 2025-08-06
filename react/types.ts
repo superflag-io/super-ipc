@@ -18,7 +18,7 @@ export interface BackendApiHookResult<
   loading: boolean;
   refetch: (
     props?: API[CHANNEL]['props'],
-  ) => Promise<BackendResult<API[CHANNEL]['result']>>;
+  ) => Promise<Omit<BackendApiHookResult<CHANNEL, API>, 'refetch'>>;
 }
 
 export interface BackendApiHookProps<

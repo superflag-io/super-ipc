@@ -1,6 +1,6 @@
 {
   "name": "@superflag/super-ipc-preloader",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "A sanely typed convenience wrapper around electron ipc",
   "exports": {
     "import": "./build/mjs/index.js",

@@ -1,5 +1,11 @@
 # @superflag/super-ipc-core
 
+## 0.0.15
+
+### Patch Changes
+
+- fix cjs types
+
 ## 0.0.14
 
 ### Patch Changes

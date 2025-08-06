@@ -1,5 +1,11 @@
 # @superflag/super-ipc-core
 
+## 0.0.16
+
+### Patch Changes
+
+- module
+
 ## 0.0.15
 
 ### Patch Changes

@@ -1,10 +1,11 @@
 {
   "name": "@superflag/super-ipc-core",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "A sanely typed convenience wrapper around electron ipc",
   "type": "module",
   "exports": {
-    "import": "./build/index.js"
+    "import": "./build/index.js",
+    "types": "./build/index.d.ts"
   },
   "files": [
     "build/**",

@@ -1,5 +1,11 @@
 # @superflag/super-ipc-preloader
 
+## 0.0.12
+
+### Patch Changes
+
+- ffe5b10: Include type export in published bundle
+
 ## 0.0.11
 
 ### Patch Changes

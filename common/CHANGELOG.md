@@ -1,5 +1,11 @@
 # @superflag/super-ipc-core
 
+## 0.0.14
+
+### Patch Changes
+
+- test fix for types
+
 ## 0.0.13
 
 ### Patch Changes

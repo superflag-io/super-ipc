@@ -1,12 +1,11 @@
 {
   "name": "@superflag/super-ipc-backend",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "A sanely typed convenience wrapper around electron ipc",
   "type": "module",
   "exports": {
     "import": "./build/mjs/index.js",
-    "require": "./build/cjs/index.js",
-    "types": "./build/mjs/index.d.ts"
+    "require": "./build/cjs/index.js"
   },
   "files": [
     "build/**",

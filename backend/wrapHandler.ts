@@ -25,7 +25,7 @@ export function wrapHandler(
 ): (event: IpcMainInvokeEvent, args: any) => Promise<BackendResult> {
   return async (event, args) => {
     try {
-      const content = handler({ app, args, event });
+      const content = await handler({ app, args, event });
       return {
         content: JSON.stringify(content),
         resultMode: BackendResultMode.Init,
@@ -67,7 +67,7 @@ export function wrapHandlerAsync(
 ) => Promise<BackendResult> {
   return async (event, args, callId) => {
     try {
-      const content = handler({
+      const content = await handler({
         app,
         args,
         event,

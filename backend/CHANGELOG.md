@@ -1,5 +1,13 @@
 # @superflag/super-ipc-backend
 
+## 0.0.17
+
+### Patch Changes
+
+- More type fixes
+- Updated dependencies
+  - @superflag/super-ipc-core@0.0.17
+
 ## 0.0.16
 
 ### Patch Changes

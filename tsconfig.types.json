@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+//    "module": "commonjs",
+//    "moduleResolution": "bundler",
+    "outDir": "${configDir}/build/types",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": false,
+    "inlineSourceMap": false,
+    "emitDeclarationOnly": true
+    //    "lib": ["ESNext","ES2022"]
+//    "moduleDetection": "force"
+  }
+}

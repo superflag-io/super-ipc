@@ -1,10 +1,11 @@
 {
   "name": "@superflag/super-ipc-react",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "A sanely typed convenience wrapper around electron ipc",
   "exports": {
     "import": "./build/mjs/index.js",
-    "require": "./build/cjs/index.js"
+    "require": "./build/cjs/index.js",
+    "types": "./build/types/index.d.ts"
   },
   "files": [
     "build/**",
@@ -35,7 +36,8 @@
   "scripts": {
     "clean": "rm -rf build",
     "build:es6": "tsc",
-    "build:cjs": "tsc -p tsconfig.cjs.json"
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:types": "tsc -p tsconfig.types.json"
   },
   "dependencies": {
     "react": ">16.8",

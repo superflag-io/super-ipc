@@ -40,9 +40,6 @@ import type { CHANNELS, ASYNC_CHANNELS, AppSyncApi, AppAsyncApi } from '../share
 export const useBackend = createUseBackendSyncHook<CHANNELS, AppSyncApi>();
 export const useBackendMutation = createUseBackendMutationSyncHook<CHANNELS, AppSyncApi>();
 export const useBackendAsync = createUseBackendAsyncHook<ASYNC_CHANNELS, AppAsyncApi>();
-
-// Hook to access app version
-export { useAppVersion } from '@superflag/super-ipc-react';
 ```
 
 ### 2. Use in Components
@@ -242,11 +239,9 @@ declare global {
 
 ```tsx
 import React from 'react';
-import { useBackend, useAppVersion } from '../hooks/useIpc';
+import { useBackend } from '../hooks/useIpc';
 
 function AppInfo() {
-  // Get app version directly from preloader (no IPC call needed)
-  const appVersion = useAppVersion();
   
   // Get additional app data via IPC
   const { data: appData, loading, error } = useBackend({
@@ -256,7 +251,6 @@ function AppInfo() {
 
   return (
     <div>
-      <div>App Version: {appVersion}</div>
       {loading ? (
         'Loading app data...'
       ) : (

@@ -368,16 +368,3 @@ export const createUseBackendAsyncHook = <
   ): BackendApiAsyncHookResult<CHANNEL, API> =>
     useBackendAsyncRaw<ALL_CHANNELS, API, CHANNEL>(props);
 };
-
-/**
- * Hook to get the app version exposed by the preloader
- * @returns The application version string, or 'Unknown' if not available
- */
-export const useAppVersion = (): string => {
-  try {
-    return getElectronApi().version || 'Unknown';
-  } catch (error) {
-    console.warn('Could not get app version:', error);
-    return 'Unknown';
-  }
-};

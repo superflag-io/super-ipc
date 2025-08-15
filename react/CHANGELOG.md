@@ -1,5 +1,13 @@
 # @superflag/super-ipc-react
 
+## 0.0.21
+
+### Patch Changes
+
+- Remove faulty preloader version
+- Updated dependencies
+  - @superflag/super-ipc-core@0.0.21
+
 ## 0.0.20
 
 ### Patch Changes

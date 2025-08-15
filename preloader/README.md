@@ -28,11 +28,7 @@ import { contextBridge, ipcRenderer } from 'electron';
 import { registerElectronApiBridge } from '@superflag/super-ipc-preloader';
 
 // This is all you need! The bridge will be available as window.electronApi
-// App version will be automatically obtained from app.getVersion()
 registerElectronApiBridge(contextBridge, ipcRenderer);
-
-// Or you can pass a custom version string if needed
-// registerElectronApiBridge(contextBridge, ipcRenderer, '1.0.0-custom');
 ```
 
 ### Webpack Configuration
@@ -72,7 +68,6 @@ Registers the IPC bridge that exposes Super IPC functionality to the renderer pr
 **Parameters:**
 - `contextBridge`: Electron's contextBridge module
 - `ipcRenderer`: Electron's ipcRenderer module
-- `appVersion` (optional): App version string. If not provided, will use `app.getVersion()` automatically
 
 **Returns:** `void`
 
@@ -81,11 +76,8 @@ Registers the IPC bridge that exposes Super IPC functionality to the renderer pr
 import { contextBridge, ipcRenderer } from 'electron';
 import { registerElectronApiBridge } from '@superflag/super-ipc-preloader';
 
-// Basic usage - app version automatically retrieved
+// Basic usage
 registerElectronApiBridge(contextBridge, ipcRenderer);
-
-// With custom version string (optional)
-registerElectronApiBridge(contextBridge, ipcRenderer, '1.0.0-beta');
 ```
 
 ## What Gets Exposed
@@ -98,7 +90,6 @@ interface ElectronApi {
   invoke: (channel: string, ...args: any[]) => Promise<any>;
   on: (channel: string, callback: (...args: any[]) => void) => void;
   removeListener: (channel: string, callback: (...args: any[]) => void) => void;
-  version: string; // App version from app.getVersion()
 }
 ```
 

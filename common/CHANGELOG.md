@@ -1,5 +1,11 @@
 # @superflag/super-ipc-core
 
+## 0.0.21
+
+### Patch Changes
+
+- Remove faulty preloader version
+
 ## 0.0.20
 
 ### Patch Changes

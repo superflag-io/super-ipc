@@ -1,6 +1,7 @@
 {
   "name": "@superflag/super-ipc",
   "version": "0.0.9",
+  "type": "module",
   "description": "A sanely typed convenience wrapper around electron ipc",
   "keywords": [
     "electron",
@@ -27,6 +28,10 @@
     "build-types:cjs": "pnpm run --filter @superflag/super-ipc-core build:cjs && pnpm run -r build:cjs",
     "build-types:es6": "pnpm run --filter @superflag/super-ipc-core build:es6 && pnpm run -r build:es6",
     "build-types:types": "pnpm run --filter @superflag/super-ipc-core build:types && pnpm run -r build:types",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "lint:all": "pnpm run -r lint",
+    "lint:fix:all": "pnpm run -r lint:fix",
     "pub": "pnpm run build-types:all && pnpm publish -r && pnpm run clean"
   }
 }

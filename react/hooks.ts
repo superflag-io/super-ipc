@@ -19,10 +19,10 @@ const getElectronApi = () => {
   if (!electronApi) {
     throw new Error(
       'electronApi not found. Ensure that:\n' +
-      '1. The preload script is correctly configured in your main process\n' +
-      '2. registerElectronApiBridge() is called in your preload script\n' +
-      '3. contextIsolation is enabled and nodeIntegration is disabled\n' +
-      '4. The preload script path is correct in BrowserWindow webPreferences'
+        '1. The preload script is correctly configured in your main process\n' +
+        '2. registerElectronApiBridge() is called in your preload script\n' +
+        '3. contextIsolation is enabled and nodeIntegration is disabled\n' +
+        '4. The preload script path is correct in BrowserWindow webPreferences',
     );
   }
   return electronApi;
@@ -37,7 +37,11 @@ function handleError<T>(
       console.error(response.error);
       setError(AppError.fromJSON(response.error));
     } catch (err) {
-      console.error('received error that is not an AppError', response.error);
+      console.error(
+        'received error that is not an AppError',
+        response.error,
+        err,
+      );
       setError(response.error);
     }
   }
@@ -47,7 +51,7 @@ function tryParseData<T>(response: BackendResult): T | undefined {
   try {
     return response.content ? JSON.parse(response.content) : undefined;
   } catch (err) {
-    console.error('Invalid json response');
+    console.error('Invalid json response', err);
     return undefined;
   }
 }
@@ -138,7 +142,7 @@ export const useBackendMutationRaw = <
 export const useBackendAsyncRaw = <
   ALL_CHANNELS extends string,
   API extends BackendAsyncApiType<CHANNEL>,
-  CHANNEL extends string,
+  CHANNEL extends ALL_CHANNELS,
 >({
   channel,
   props,

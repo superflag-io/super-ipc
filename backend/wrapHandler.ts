@@ -18,16 +18,18 @@ function backendResultFromError(
       resultMode,
       callId,
     };
-  } catch (serializationError) {
+  } catch (serializationError: any) {
     // Fallback if error can't be serialized
     return {
-      error: JSON.stringify(new AppError('Serialization error occurred', { 
-        inner: { 
-          message: error?.message || 'Unknown error',
-          name: error?.name || 'Error',
-          stack: error?.stack
-        } 
-      })),
+      error: JSON.stringify(
+        new AppError('Serialization error occurred', {
+          inner: {
+            message: `${error?.message || 'Unknown error'}: ${serializationError.message}`,
+            name: error?.name || 'Error',
+            stack: error?.stack,
+          },
+        }),
+      ),
       resultMode,
       callId,
     };
@@ -65,14 +67,14 @@ function wrapAsyncResult(
       resultMode,
       callId,
     };
-  } catch (error) {
+  } catch (error: any) {
     result = backendResultFromError(
-      new Error(`Failed to serialize async result: ${error.message}`), 
-      resultMode, 
-      callId
+      new Error(`Failed to serialize async result: ${error.message}`),
+      resultMode,
+      callId,
     );
   }
-  
+
   // Check if sender is still valid before sending
   try {
     if (!event.sender.isDestroyed()) {
@@ -80,7 +82,10 @@ function wrapAsyncResult(
     }
   } catch (senderError) {
     // Log error but don't throw - the renderer process may have been destroyed
-    console.error(`Failed to send async result for channel ${channel}:`, senderError);
+    console.error(
+      `Failed to send async result for channel ${channel}:`,
+      senderError,
+    );
   }
 }
 
@@ -132,11 +137,18 @@ export function wrapHandlerAsync(
               if (!event.sender.isDestroyed()) {
                 event.sender.send(
                   channel + ASYNC_REPLY_SUFFIX,
-                  backendResultFromError(error, BackendResultMode.Complete, callId),
+                  backendResultFromError(
+                    error,
+                    BackendResultMode.Complete,
+                    callId,
+                  ),
                 );
               }
             } catch (senderError) {
-              console.error(`Failed to send async error for channel ${channel}:`, senderError);
+              console.error(
+                `Failed to send async error for channel ${channel}:`,
+                senderError,
+              );
             }
           },
         },

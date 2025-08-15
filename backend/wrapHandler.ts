@@ -11,12 +11,27 @@ function backendResultFromError(
   error: any,
   resultMode: BackendResultMode = BackendResultMode.Complete,
   callId?: number,
-) {
-  return {
-    error: JSON.stringify(new AppError('error', { inner: error })),
-    resultMode,
-    callId,
-  };
+): BackendResult {
+  try {
+    return {
+      error: JSON.stringify(new AppError('error', { inner: error })),
+      resultMode,
+      callId,
+    };
+  } catch (serializationError) {
+    // Fallback if error can't be serialized
+    return {
+      error: JSON.stringify(new AppError('Serialization error occurred', { 
+        inner: { 
+          message: error?.message || 'Unknown error',
+          name: error?.name || 'Error',
+          stack: error?.stack
+        } 
+      })),
+      resultMode,
+      callId,
+    };
+  }
 }
 
 export function wrapHandler(
@@ -28,7 +43,7 @@ export function wrapHandler(
       const content = await handler({ app, args, event });
       return {
         content: JSON.stringify(content),
-        resultMode: BackendResultMode.Init,
+        resultMode: BackendResultMode.Complete, // Fixed: should be Complete for sync operations
       };
     } catch (error) {
       return backendResultFromError(error);
@@ -51,9 +66,22 @@ function wrapAsyncResult(
       callId,
     };
   } catch (error) {
-    result = backendResultFromError(error, resultMode, callId);
+    result = backendResultFromError(
+      new Error(`Failed to serialize async result: ${error.message}`), 
+      resultMode, 
+      callId
+    );
   }
-  event.sender.send(channel + ASYNC_REPLY_SUFFIX, result);
+  
+  // Check if sender is still valid before sending
+  try {
+    if (!event.sender.isDestroyed()) {
+      event.sender.send(channel + ASYNC_REPLY_SUFFIX, result);
+    }
+  } catch (senderError) {
+    // Log error but don't throw - the renderer process may have been destroyed
+    console.error(`Failed to send async result for channel ${channel}:`, senderError);
+  }
 }
 
 export function wrapHandlerAsync(
@@ -100,10 +128,16 @@ export function wrapHandlerAsync(
             );
           },
           onError: (error) => {
-            event.sender.send(
-              channel + ASYNC_REPLY_SUFFIX,
-              backendResultFromError(error, BackendResultMode.Complete, callId),
-            );
+            try {
+              if (!event.sender.isDestroyed()) {
+                event.sender.send(
+                  channel + ASYNC_REPLY_SUFFIX,
+                  backendResultFromError(error, BackendResultMode.Complete, callId),
+                );
+              }
+            } catch (senderError) {
+              console.error(`Failed to send async error for channel ${channel}:`, senderError);
+            }
           },
         },
       });

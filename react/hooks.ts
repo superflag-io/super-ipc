@@ -14,7 +14,19 @@ import type {
 } from './types';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-const electronApi = (window as any).electronApi;
+const getElectronApi = () => {
+  const electronApi = (window as any).electronApi;
+  if (!electronApi) {
+    throw new Error(
+      'electronApi not found. Ensure that:\n' +
+      '1. The preload script is correctly configured in your main process\n' +
+      '2. registerElectronApiBridge() is called in your preload script\n' +
+      '3. contextIsolation is enabled and nodeIntegration is disabled\n' +
+      '4. The preload script path is correct in BrowserWindow webPreferences'
+    );
+  }
+  return electronApi;
+};
 
 function handleError<T>(
   response: BackendResult<T>,
@@ -63,7 +75,7 @@ export const useBackendRaw = <
       if (!keepDataDuringRefetch && data) {
         setData(undefined);
       }
-      return electronApi
+      return getElectronApi()
         .invoke(channel, propOverrides ?? props)
         .then((response: BackendResult) => {
           let receivedData: API[CHANNEL]['result'] | undefined;
@@ -210,12 +222,13 @@ export const useBackendAsyncRaw = <
   const prevListener = useRef(listener);
 
   useEffect(() => {
+    const electronApi = getElectronApi();
     electronApi.removeListener(replyChannel, prevListener.current);
     electronApi.on(replyChannel, listener);
     prevListener.current = listener;
 
     // remove on unmount
-    return () => electronApi.removeListener(replyChannel, listener);
+    return () => getElectronApi().removeListener(replyChannel, listener);
   }, [listener]);
 
   const makeRequest = useCallback(
@@ -231,7 +244,7 @@ export const useBackendAsyncRaw = <
       setError(undefined);
       setLoading(true);
 
-      return electronApi
+      return getElectronApi()
         .invoke(channel, propOverrides ?? props, callId.current)
         .then((response: BackendResult<void>) => {
           handleError(response, setError);
@@ -291,4 +304,16 @@ export const createUseBackendAsyncHook = <
     props: BackendApiAsyncHookProps<CHANNEL, API>,
   ): BackendApiAsyncHookResult<CHANNEL, API> =>
     useBackendAsyncRaw<ALL_CHANNELS, API, CHANNEL>(props);
+};
+
+/**
+ * Hook to get the app version exposed by the preloader
+ */
+export const useAppVersion = (): string => {
+  try {
+    return getElectronApi().version || 'Unknown';
+  } catch (error) {
+    console.warn('Could not get app version:', error);
+    return 'Unknown';
+  }
 };

@@ -1,5 +1,14 @@
 # @superflag/super-ipc-preloader
 
+## 0.0.20
+
+### Patch Changes
+
+- update readmes
+- add global electronApi type for advanced usages
+- improve error handling
+- add app version support to the electron bridge and react hooks
+
 ## 0.0.19
 
 ### Patch Changes

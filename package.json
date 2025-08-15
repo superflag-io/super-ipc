@@ -12,6 +12,7 @@
     "url": "https://github.com/superflag-io/super-ipc/issues"
   },
   "devDependencies": {
+    "@anthropic-ai/claude-code": "^1.0.81",
     "@changesets/cli": "^2.29.5",
     "@eslint/js": "^9.31.0",
     "eslint": "^9.31.0",

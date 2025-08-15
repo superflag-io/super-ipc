@@ -1,5 +1,11 @@
 # @superflag/super-ipc-preloader
 
+## 0.0.19
+
+### Patch Changes
+
+- fix ide autocorrect attempt 1
+
 ## 0.0.18
 
 ### Patch Changes

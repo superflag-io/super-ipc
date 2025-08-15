@@ -1,5 +1,13 @@
 # @superflag/super-ipc-backend
 
+## 0.0.19
+
+### Patch Changes
+
+- fix ide autocorrect attempt 1
+- Updated dependencies
+  - @superflag/super-ipc-core@0.0.19
+
 ## 0.0.18
 
 ### Patch Changes

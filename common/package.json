@@ -1,7 +1,9 @@
 {
   "name": "@superflag/super-ipc-core",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "A sanely typed convenience wrapper around electron ipc",
+  "main": "./build/cjs/index.js",
+  "types": "./build/types/index.d.ts",
   "exports": {
     "import": "./build/mjs/index.js",
     "require": "./build/cjs/index.js",

@@ -36,6 +36,12 @@ function backendResultFromError(
   }
 }
 
+/**
+ * Wraps a backend handler function with error handling and result serialization
+ * @param app - The Electron App instance
+ * @param handler - The backend handler function to wrap
+ * @returns A wrapped handler that can be used with ipcMain.handle()
+ */
 export function wrapHandler(
   app: App,
   handler: BackendHandler,
@@ -89,6 +95,13 @@ function wrapAsyncResult(
   }
 }
 
+/**
+ * Wraps an async backend handler with progress tracking and error handling
+ * @param app - The Electron App instance
+ * @param handler - The async backend handler function to wrap
+ * @param channel - The IPC channel name (used for reply channel construction)
+ * @returns A wrapped async handler that supports init/progress/complete callbacks
+ */
 export function wrapHandlerAsync(
   app: App,
   handler: BackendHandlerAsync,

@@ -1,6 +1,7 @@
 import {
   AppError,
   ASYNC_REPLY_SUFFIX,
+  MAX_CALL_ID,
   type BackendAsyncApiType,
   type BackendResult,
   BackendResultMode,
@@ -14,6 +15,11 @@ import type {
 } from './types';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+/**
+ * Gets the Electron API from the global window object
+ * @throws {Error} When electronApi is not found or preload script is not properly configured
+ * @returns The Electron API instance
+ */
 const getElectronApi = () => {
   const electronApi = (window as any).electronApi;
   if (!electronApi) {
@@ -56,6 +62,18 @@ function tryParseData<T>(response: BackendResult): T | undefined {
   }
 }
 
+/**
+ * Raw hook for making synchronous IPC calls to the backend
+ * @template ALL_CHANNELS - Union of all available channel names
+ * @template API - The backend sync API type definition
+ * @template CHANNEL - Specific channel being used
+ * @param options - Hook configuration options
+ * @param options.channel - The IPC channel to call
+ * @param options.props - Arguments to pass to the backend handler
+ * @param options.skip - Whether to skip the initial request
+ * @param options.keepDataDuringRefetch - Whether to keep existing data during refetch
+ * @returns Object containing data, error, loading state, and refetch function
+ */
 export const useBackendRaw = <
   ALL_CHANNELS extends string,
   API extends BackendSyncApiType<ALL_CHANNELS>,
@@ -124,6 +142,14 @@ export const useBackendRaw = <
   };
 };
 
+/**
+ * Raw hook for making synchronous IPC mutations (calls that don't execute on mount)
+ * @template ALL_CHANNELS - Union of all available channel names
+ * @template API - The backend sync API type definition
+ * @template CHANNEL - Specific channel being used
+ * @param props - Hook configuration options (excluding skip)
+ * @returns Tuple of [trigger function, result object with data/error/loading]
+ */
 export const useBackendMutationRaw = <
   ALL_CHANNELS extends string,
   API extends BackendSyncApiType<ALL_CHANNELS>,
@@ -139,6 +165,21 @@ export const useBackendMutationRaw = <
   return [result.refetch, result];
 };
 
+/**
+ * Raw hook for making asynchronous IPC calls with progress tracking
+ * @template ALL_CHANNELS - Union of all available channel names
+ * @template API - The backend async API type definition
+ * @template CHANNEL - Specific channel being used
+ * @param options - Hook configuration options
+ * @param options.channel - The IPC channel to call
+ * @param options.props - Arguments to pass to the backend handler
+ * @param options.skip - Whether to skip the initial request
+ * @param options.keepDataDuringRefetch - Whether to keep existing data during refetch
+ * @param options.onInit - Callback fired when async operation initializes
+ * @param options.onProgress - Callback fired on each progress update
+ * @param options.onComplete - Callback fired when operation completes
+ * @returns Object containing initial data, progress data, complete data, error, loading state, and refetch function
+ */
 export const useBackendAsyncRaw = <
   ALL_CHANNELS extends string,
   API extends BackendAsyncApiType<CHANNEL>,
@@ -163,7 +204,7 @@ export const useBackendAsyncRaw = <
   const [completeData, setCompleteData] =
     useState<API[CHANNEL]['completeResult']>();
   const [error, setError] = useState<BackendResult['error']>();
-  const callId = useRef(Math.round(Math.random() * 100000));
+  const callId = useRef(Math.round(Math.random() * MAX_CALL_ID));
   const replyChannel = channel + ASYNC_REPLY_SUFFIX;
 
   // status listener
@@ -237,7 +278,7 @@ export const useBackendAsyncRaw = <
 
   const makeRequest = useCallback(
     (propOverrides?: API[CHANNEL]['props']) => {
-      callId.current = Math.round(Math.random() * 100000);
+      callId.current = Math.round(Math.random() * MAX_CALL_ID);
 
       // clear states
       if (!keepDataDuringRefetch) {
@@ -278,6 +319,12 @@ export const useBackendAsyncRaw = <
   };
 };
 
+/**
+ * Creates a typed hook factory for synchronous backend calls
+ * @template ALL_CHANNELS - Union of all available channel names
+ * @template API - The backend sync API type definition
+ * @returns A hook factory function that can be used to create typed backend hooks
+ */
 export const createUseBackendSyncHook = <
   ALL_CHANNELS extends string,
   API extends BackendSyncApiType<ALL_CHANNELS>,
@@ -288,6 +335,12 @@ export const createUseBackendSyncHook = <
     useBackendRaw<ALL_CHANNELS, API, CHANNEL>(props);
 };
 
+/**
+ * Creates a typed hook factory for synchronous backend mutations
+ * @template ALL_CHANNELS - Union of all available channel names
+ * @template API - The backend sync API type definition
+ * @returns A hook factory function that creates mutation hooks (calls that don't execute on mount)
+ */
 export const createUseBackendMutationSyncHook = <
   ALL_CHANNELS extends string,
   API extends BackendSyncApiType<ALL_CHANNELS>,
@@ -300,6 +353,12 @@ export const createUseBackendMutationSyncHook = <
   ] => useBackendMutationRaw<ALL_CHANNELS, API, CHANNEL>(props);
 };
 
+/**
+ * Creates a typed hook factory for asynchronous backend calls with progress tracking
+ * @template ALL_CHANNELS - Union of all available channel names
+ * @template API - The backend async API type definition
+ * @returns A hook factory function that creates async hooks with init/progress/complete tracking
+ */
 export const createUseBackendAsyncHook = <
   ALL_CHANNELS extends string,
   API extends BackendAsyncApiType<ALL_CHANNELS>,
@@ -312,6 +371,7 @@ export const createUseBackendAsyncHook = <
 
 /**
  * Hook to get the app version exposed by the preloader
+ * @returns The application version string, or 'Unknown' if not available
  */
 export const useAppVersion = (): string => {
   try {

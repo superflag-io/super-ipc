@@ -2,6 +2,16 @@ import type { App, IpcMain } from 'electron';
 import { wrapHandler, wrapHandlerAsync } from './wrapHandler';
 import type { BackendHandler, BackendHandlerAsync } from './types';
 
+/**
+ * Sets up IPC handlers for both synchronous and asynchronous backend calls
+ * @param app - The Electron App instance
+ * @param backendHandlers - Map of channel names to synchronous handler functions
+ * @param backendAsyncHandlers - Map of channel names to asynchronous handler functions
+ * @param ipcMain - The Electron IpcMain instance
+ * @throws {Error} When app or ipcMain instances are missing
+ * @throws {Error} When channel names are invalid or handlers are not functions
+ * @throws {Error} When attempting to register duplicate channels
+ */
 export function setupApiHandlers(
   app: App,
   backendHandlers: Record<string, BackendHandler>,

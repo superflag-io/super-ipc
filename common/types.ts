@@ -19,4 +19,4 @@ export type DeepPartial<T> = T extends object
     }
   : T;
 
-export const ASYNC_REPLY_SUFFIX = '-ASYNC_REPLY';
+export { ASYNC_REPLY_SUFFIX } from './constants';

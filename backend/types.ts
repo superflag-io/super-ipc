@@ -11,13 +11,13 @@ export type BackendHandler<P = any, R = any> = (args: {
 }) => Promise<R> | R;
 
 export type BackendHandlerAsync<
-  P = any,
+  PROPS_TYPE = any,
   RINIT = any,
   RPROGRESS = any,
   RCOMPLETE = any,
 > = (args: {
   app: App;
-  args: P;
+  args: PROPS_TYPE;
   event: IpcMainInvokeEvent;
   handlers: {
     onInit: (result: RINIT) => void;
@@ -28,20 +28,20 @@ export type BackendHandlerAsync<
 }) => Promise<void> | void;
 
 export type BackendSyncHandlersType<
-  C extends string,
-  T extends BackendSyncApiType<C>,
+  CHANNEL_NAMES extends string,
+  API_TYPE extends BackendSyncApiType<CHANNEL_NAMES>,
 > = {
-  [K in keyof T]: BackendHandler<T[K]['props'], T[K]['result']>;
+  [K in keyof API_TYPE]: BackendHandler<API_TYPE[K]['props'], API_TYPE[K]['result']>;
 };
 
 export type BackendAsyncHandlersType<
-  C extends string,
-  T extends BackendAsyncApiType<C>,
+  CHANNEL_NAMES extends string,
+  API_TYPE extends BackendAsyncApiType<CHANNEL_NAMES>,
 > = {
-  [K in keyof T]: BackendHandlerAsync<
-    T[K]['props'],
-    T[K]['initResult'],
-    T[K]['progressResult'],
-    T[K]['completeResult']
+  [K in keyof API_TYPE]: BackendHandlerAsync<
+    API_TYPE[K]['props'],
+    API_TYPE[K]['initResult'],
+    API_TYPE[K]['progressResult'],
+    API_TYPE[K]['completeResult']
   >;
 };

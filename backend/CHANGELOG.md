@@ -1,5 +1,13 @@
 # @superflag/super-ipc-backend
 
+## 0.0.22
+
+### Patch Changes
+
+- fix removelistener
+- Updated dependencies
+  - @superflag/super-ipc-core@0.0.22
+
 ## 0.0.21
 
 ### Patch Changes

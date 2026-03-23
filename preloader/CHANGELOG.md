@@ -1,5 +1,11 @@
 # @superflag/super-ipc-preloader
 
+## 0.0.22
+
+### Patch Changes
+
+- fix removelistener
+
 ## 0.0.21
 
 ### Patch Changes

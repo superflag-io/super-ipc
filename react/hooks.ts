@@ -264,16 +264,21 @@ export const useBackendAsyncRaw = <
       onProgress,
     ],
   );
-  const prevListener = useRef(listener);
+  const listenerIdRef = useRef<number | null>(null);
 
   useEffect(() => {
     const electronApi = getElectronApi();
-    electronApi.removeListener(replyChannel, prevListener.current);
-    electronApi.on(replyChannel, listener);
-    prevListener.current = listener;
+    if (listenerIdRef.current !== null) {
+      electronApi.removeListener(listenerIdRef.current);
+    }
+    listenerIdRef.current = electronApi.on(replyChannel, listener);
 
-    // remove on unmount
-    return () => getElectronApi().removeListener(replyChannel, listener);
+    return () => {
+      if (listenerIdRef.current !== null) {
+        getElectronApi().removeListener(listenerIdRef.current);
+        listenerIdRef.current = null;
+      }
+    };
   }, [listener]);
 
   const makeRequest = useCallback(

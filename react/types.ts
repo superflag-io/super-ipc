@@ -94,16 +94,16 @@ export interface TypedElectronApi<
   ): Promise<BackendResult<void>>;
 
   /**
-   * Listen for async IPC progress updates
+   * Listen for async IPC progress updates.
+   * Returns a numeric listener ID for use with `off()`.
    * @param channel - The async reply channel name
    * @param callback - Callback function to handle progress updates
    */
-  on(channel: string, callback: (...args: any[]) => void): void;
+  on(channel: string, callback: (...args: any[]) => void): number;
 
   /**
-   * Remove a listener for async IPC progress updates
-   * @param channel - The async reply channel name
-   * @param callback - The callback function to remove
+   * Remove a listener by the ID returned from `on()`.
+   * @param id - The listener ID to remove
    */
-  removeListener(channel: string, callback: (...args: any[]) => void): void;
+  removeListener(id: number): void;
 }

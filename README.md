@@ -321,6 +321,18 @@ This monorepo uses [Changesets](https://github.com/changesets/changesets) to man
 
 The publish command (`pnpm run pub`) is the single source of truth — the CI workflow just calls it directly.
 
+### Trusted Publishing
+
+This repo uses npm's [Trusted Publishing](https://docs.npmjs.com/generating-provenance-statements) (OIDC) instead of long-lived tokens. No `NPM_TOKEN` secret is needed.
+
+**One-time setup** — for each package on npmjs.com, go to **Packages → [package] → Settings → Access → Require two-factor authentication or automation**, then under **GitHub Actions (Trusted Publishing)** link the repository `superflag-io/super-ipc` with the workflow path `.github/workflows/publish.yml`.
+
+Packages to configure:
+- `@superflag/super-ipc-core`
+- `@superflag/super-ipc-backend`
+- `@superflag/super-ipc-preloader`
+- `@superflag/super-ipc-react`
+
 ## License
 
 MIT

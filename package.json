@@ -32,6 +32,6 @@
     "lint:fix": "eslint . --fix",
     "lint:all": "pnpm run -r lint",
     "lint:fix:all": "pnpm run -r lint:fix",
-    "pub": "pnpm run build-types:all && pnpm publish -r && pnpm run clean"
+    "pub": "pnpm run build-types:all && pnpm publish -r"
   }
 }

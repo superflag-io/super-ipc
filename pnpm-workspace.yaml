@@ -3,3 +3,5 @@ packages:
   - 'backend'
   - 'common'
   - 'preloader'
+allowBuilds:
+  electron: true

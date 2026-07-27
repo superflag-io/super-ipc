@@ -1,5 +1,11 @@
 # @superflag/super-ipc-core
 
+## 0.1.0
+
+### Minor Changes
+
+- Add support for backend push events
+
 ## 0.0.22
 
 ### Patch Changes

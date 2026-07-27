@@ -1,5 +1,16 @@
 # @superflag/super-ipc-react
 
+## 0.1.0
+
+### Minor Changes
+
+- Add support for backend push events
+
+### Patch Changes
+
+- Updated dependencies
+  - @superflag/super-ipc-core@0.1.0
+
 ## 0.0.22
 
 ### Patch Changes

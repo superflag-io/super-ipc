@@ -17,6 +17,17 @@ export type BackendSyncApiType<
 >;
 
 /**
+ * Type definition for push-only backend channels (backend → renderer).
+ * Maps channel names to the data type that is pushed.
+ * @template CHANNEL_NAMES - Union type of channel names (string enum)
+ * @template DATA_TYPE - Type of the pushed data
+ */
+export type BackendPushApiType<
+  CHANNEL_NAMES extends string,
+  DATA_TYPE = unknown,
+> = Record<CHANNEL_NAMES, { data: DATA_TYPE }>;
+
+/**
  * Type definition for asynchronous backend API channels with progress tracking
  * @template CHANNEL_NAMES - Union type of channel names (string enum)
  * @template PROPS_TYPE - Type of input properties/arguments

@@ -1,5 +1,6 @@
 import type {
   BackendAsyncApiType,
+  BackendPushApiType,
   BackendResult,
   BackendSyncApiType,
 } from '@superflag/super-ipc-core';
@@ -54,6 +55,14 @@ export interface BackendApiAsyncHookProps<
   onInit?: (event: API[CHANNEL]['initResult']) => void;
   onProgress?: (event: API[CHANNEL]['progressResult']) => void;
   onComplete?: (event: API[CHANNEL]['completeResult']) => void;
+}
+
+export interface BackendListenerHookProps<
+  CHANNEL extends string,
+  API extends BackendPushApiType<CHANNEL>,
+> {
+  channel: CHANNEL;
+  callback: (data: API[CHANNEL]['data']) => void;
 }
 
 /**

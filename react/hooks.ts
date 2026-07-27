@@ -3,6 +3,7 @@ import {
   ASYNC_REPLY_SUFFIX,
   MAX_CALL_ID,
   type BackendAsyncApiType,
+  type BackendPushApiType,
   type BackendResult,
   BackendResultMode,
   type BackendSyncApiType,
@@ -12,6 +13,7 @@ import type {
   BackendApiAsyncHookResult,
   BackendApiHookProps,
   BackendApiHookResult,
+  BackendListenerHookProps,
 } from './types';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -372,4 +374,92 @@ export const createUseBackendAsyncHook = <
     props: BackendApiAsyncHookProps<CHANNEL, API>,
   ): BackendApiAsyncHookResult<CHANNEL, API> =>
     useBackendAsyncRaw<ALL_CHANNELS, API, CHANNEL>(props);
+};
+
+/**
+ * Raw hook for listening to push-only IPC channels from the backend.
+ *
+ * Use this for channels where the backend pushes data to the renderer
+ * via `event.sender.send(channel, data)` — e.g. status changes,
+ * settings updates, or any backend-initiated push.
+ *
+ * The callback ref is kept stable internally, so callers do not need
+ * to memoize the callback.
+ *
+ * @template ALL_CHANNELS - Union of all available channel names
+ * @template API - The backend push API type definition
+ * @template CHANNEL - Specific channel being listened to
+ */
+export const useBackendListenerRaw = <
+  ALL_CHANNELS extends string,
+  API extends BackendPushApiType<CHANNEL>,
+  CHANNEL extends ALL_CHANNELS,
+>({
+  channel,
+  callback,
+}: BackendListenerHookProps<CHANNEL, API>): void => {
+  const callbackRef = useRef(callback);
+  callbackRef.current = callback;
+
+  useEffect(() => {
+    const electronApi = getElectronApi();
+    const listenerId = electronApi.on(
+      channel,
+      (_event: unknown, data: API[CHANNEL]['data']) => {
+        callbackRef.current(data);
+      },
+    );
+
+    return () => {
+      getElectronApi().removeListener(listenerId);
+    };
+  }, [channel]);
+};
+
+/**
+ * Creates a typed hook factory for push-only backend listeners
+ * @template ALL_CHANNELS - Union of all available channel names
+ * @template API - The backend push API type definition
+ * @returns A hook factory function that creates typed listener hooks
+ */
+/**
+ * Creates a typed hook factory for push-only backend listeners
+ * @template ALL_CHANNELS - Union of all available channel names
+ * @template API - The backend push API type definition
+ * @returns A hook factory function that creates typed listener hooks
+ */
+export const createUseBackendListenerHook = <
+  ALL_CHANNELS extends string,
+  API extends BackendPushApiType<ALL_CHANNELS>,
+>() => {
+  return <CHANNEL extends ALL_CHANNELS>(
+    props: BackendListenerHookProps<CHANNEL, API>,
+  ): void => useBackendListenerRaw<ALL_CHANNELS, API, CHANNEL>(props);
+};
+
+/**
+ * Convenience wrapper around useBackendListenerRaw with positional arguments.
+ * Useful when a full typed push API is not defined.
+ *
+ * @template T - Type of the pushed data
+ * @param channel - The IPC channel to listen on
+ * @param callback - Handler called with the pushed data (stable ref not required)
+ */
+export const useBackendListener = <T = unknown>(
+  channel: string,
+  callback: (data: T) => void,
+): void => {
+  const callbackRef = useRef(callback);
+  callbackRef.current = callback;
+
+  useEffect(() => {
+    const electronApi = getElectronApi();
+    const listenerId = electronApi.on(channel, (_event: unknown, data: T) => {
+      callbackRef.current(data);
+    });
+
+    return () => {
+      getElectronApi().removeListener(listenerId);
+    };
+  }, [channel]);
 };

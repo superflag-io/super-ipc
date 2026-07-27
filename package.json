@@ -2,6 +2,7 @@
   "name": "@superflag/super-ipc",
   "version": "0.0.0",
   "type": "module",
+  "private": true,
   "description": "A sanely typed convenience wrapper around electron ipc",
   "keywords": [
     "electron",

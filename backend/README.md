@@ -163,6 +163,51 @@ const handlers: BackendAsyncHandlersType<ASYNC_CHANNELS, MyAsyncApi> = {
   - `onComplete(data)`: Call when operation completes successfully
   - `onError(error)`: Call when operation fails
 
+## Backend Push Events
+
+Super IPC supports **push events** — the backend can send data to any renderer window at any time, without waiting for a request.
+
+### Sending a Push Event
+
+Use Electron's `webContents.send` with your push channel:
+
+```ts
+import { BrowserWindow } from 'electron';
+
+function notifyRenderer(title: string, body: string) {
+  const win = BrowserWindow.getFocusedWindow();
+  if (win) {
+    win.webContents.send('SYSTEM_NOTIFICATION', {
+      title,
+      body,
+      urgency: 'high',
+    });
+  }
+}
+```
+
+### Usage with Handlers
+
+Push events can be sent from within your handler functions:
+
+```ts
+export const syncHandlers = {
+  [CHANNELS.WatchFile]: async ({ args, event }) => {
+    // Start watching a file in the background
+    const watcher = fs.watch(args.filePath, (eventType, filename) => {
+      // Push change events to the renderer
+      event.sender.send('FILE_CHANGED', {
+        path: args.filePath,
+        event: eventType === 'rename' ? 'deleted' : 'modified',
+      });
+    });
+    return { watching: true };
+  },
+};
+```
+
+> **Note:** Push events use Electron's built-in `webContents.send`. For type-safe listener hooks in the renderer, see [`@superflag/super-ipc-react`](../react/README.md#push-event-listeners).
+
 ## Common Usage Patterns
 
 ### File System Operations

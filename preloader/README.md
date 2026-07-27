@@ -88,9 +88,23 @@ After calling `registerElectronApiBridge`, the renderer process will have access
 // Available in renderer process as window.electronApi
 interface ElectronApi {
   invoke: (channel: string, ...args: any[]) => Promise<any>;
-  on: (channel: string, callback: (...args: any[]) => void) => void;
-  removeListener: (channel: string, callback: (...args: any[]) => void) => void;
+  on: (channel: string, callback: (...args: any[]) => void) => number;
+  removeListener: (id: number) => void;
 }
+```
+
+### Listening for Push Events
+
+The `on` method returns a numeric listener ID that you pass to `removeListener` to unsubscribe. This ID-based approach works reliably under Electron's context isolation, unlike passing callbacks to `ipcRenderer.removeListener`.
+
+```ts
+// Listen for push events from the backend
+const listenerId = window.electronApi.on('SYSTEM_NOTIFICATION', (data) => {
+  console.log('Received notification:', data);
+});
+
+// Later, unsubscribe
+window.electronApi.removeListener(listenerId);
 ```
 
 ## Usage Examples

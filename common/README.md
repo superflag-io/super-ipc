@@ -107,6 +107,28 @@ export const handlers = {
 
 The error will be automatically wrapped and sent to the renderer process where it can be caught and handled.
 
+### BackendPushApiType<TChannel>
+
+Base type for defining push-only channels where the backend sends data to the renderer without a request.
+
+```ts
+import { BackendPushApiType } from '@superflag/super-ipc-core';
+
+enum PUSH_CHANNELS {
+  SystemNotification = 'SYSTEM_NOTIFICATION',
+  FileChanged = 'FILE_CHANGED',
+}
+
+interface MyPushApi extends BackendPushApiType<PUSH_CHANNELS> {
+  [PUSH_CHANNELS.SystemNotification]: {
+    data: { title: string; body: string; urgency: 'low' | 'high' };
+  };
+  [PUSH_CHANNELS.FileChanged]: {
+    data: { path: string; event: 'created' | 'modified' | 'deleted' };
+  };
+}
+```
+
 ## Usage Examples
 
 ### Basic API Definition

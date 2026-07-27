@@ -305,6 +305,22 @@ Handle CPU-intensive tasks in the main process while providing real-time progres
 - [Preloader Configuration](./preloader/README.md)
 - [React Integration](./react/README.md)
 
+## Publishing
+
+This monorepo uses [Changesets](https://github.com/changesets/changesets) to manage versioning and publishing. The flow is:
+
+1. **Create a changeset** when making a change:
+   ```bash
+   pnpm changeset
+   ```
+   This prompts you to pick which packages are affected and what kind of version bump (patch, minor, major). A `.changeset/*.md` file is created — commit it alongside your changes.
+
+2. **Merge to `main`**: When a PR with a changeset file is merged, the [publish workflow](./.github/workflows/publish.yml) opens a "Version Packages" PR that bumps versions and updates changelogs.
+
+3. **Publish**: When the Version Packages PR is merged into `main`, the same workflow builds all packages and runs `pnpm publish -r` to push them to npm.
+
+The publish command (`pnpm run pub`) is the single source of truth — the CI workflow just calls it directly.
+
 ## License
 
 MIT

@@ -183,6 +183,53 @@ function useBackendAsync(options: {
 }
 ```
 
+### Push Event Listeners
+
+Super IPC React provides hooks for listening to push events sent from the backend via `webContents.send`.
+
+#### `useBackendListener<T>(channel, callback)`
+
+A simple, untyped listener hook for quick use.
+
+```ts
+import { useBackendListener } from '@superflag/super-ipc-react';
+
+function NotificationBell() {
+  const [lastNotification, setLastNotification] = useState(null);
+
+  useBackendListener('SYSTEM_NOTIFICATION', (data) => {
+    setLastNotification(data);
+  });
+
+  return lastNotification ? <BellIcon badge /> : <BellIcon />;
+}
+```
+
+#### `createUseBackendListenerHook<TChannel, TApi>()`
+
+Creates a fully typed listener hook factory.
+
+```ts
+import { createUseBackendListenerHook } from '@superflag/super-ipc-react';
+import { PUSH_CHANNELS, MyPushApi } from '../shared/api';
+
+const usePushListener = createUseBackendListenerHook<PUSH_CHANNELS, MyPushApi>();
+
+function FileWatcher() {
+  const [changes, setChanges] = useState([]);
+
+  usePushListener({
+    channel: PUSH_CHANNELS.FileChanged,
+    callback: (data) => {
+      // data is fully typed: { path: string; event: 'created' | 'modified' | 'deleted' }
+      setChanges((prev) => [...prev, data]);
+    },
+  });
+
+  return <ChangeLog changes={changes} />;
+}
+```
+
 ### `createUseBackendMutationSyncHook<TChannel, TApi>()`
 
 Creates a mutation hook for operations that should be triggered manually (like Apollo's `useMutation`).
